@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>Siddharth Kushwah — Software Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +20,7 @@
   --brand-2:#22d3ee;
   --brand-3:#ff5c9d;
   --glow:rgba(124,92,255,.35);
-  --web-color: 0, 255, 136; /* The green web color */
+  --web-color: 0, 255, 136;
   --radius:20px;
   --max:1180px;
 }
@@ -32,7 +32,7 @@
   --text:#101322;
   --muted:#5b6176;
   --glow:rgba(124,92,255,.22);
-  --web-color: 34, 211, 238; /* Cyan in light mode to remain visible */
+  --web-color: 34, 211, 238;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -50,17 +50,13 @@ a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 ::selection{background:var(--brand);color:#fff}
 
-/* scrollbar */
-::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar{width:8px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:linear-gradient(var(--brand),var(--brand-2));border-radius:99px}
 
 /* ========== BACKDROP FX & CANVAS ========== */
 #networkCanvas {
-  position: fixed;
-  inset: 0;
-  z-index: -1; /* Sits behind content, above blobs */
-  pointer-events: none; /* Allows clicks to pass through */
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
 }
 .blobs{position:fixed;inset:0;z-index:-2;overflow:hidden;filter:blur(90px);opacity:.55}
 .blob{position:absolute;border-radius:50%;mix-blend-mode:screen}
@@ -85,10 +81,7 @@ img{max-width:100%;display:block}
 section{padding:110px 0;position:relative}
 
 /* ========== NAV ========== */
-header{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  transition:.35s ease;
-}
+header{position:fixed;top:0;left:0;right:0;z-index:100;transition:.35s ease}
 header.scrolled .nav{
   background:color-mix(in srgb,var(--bg) 72%,transparent);
   backdrop-filter:blur(18px) saturate(180%);
@@ -100,7 +93,7 @@ header.scrolled .nav{
   display:flex;align-items:center;justify-content:space-between;
   border:1px solid transparent;border-radius:999px;transition:.35s ease;
 }
-.logo{font-weight:800;font-size:1.15rem;display:flex;align-items:center;gap:10px}
+.logo{font-weight:800;font-size:1.15rem;display:flex;align-items:center;gap:10px; z-index: 101;}
 .logo-dot{
   width:11px;height:11px;border-radius:50%;
   background:linear-gradient(135deg,var(--brand),var(--brand-2));
@@ -114,7 +107,7 @@ header.scrolled .nav{
   font-weight:500;transition:.25s;
 }
 .nav-links a:hover{color:var(--text);background:var(--card)}
-.nav-actions{display:flex;gap:10px;align-items:center}
+.nav-actions{display:flex;gap:10px;align-items:center; z-index: 101;}
 .icon-btn{
   width:40px;height:40px;display:grid;place-items:center;cursor:pointer;
   border:1px solid var(--stroke);border-radius:50%;background:var(--card);
@@ -125,15 +118,12 @@ header.scrolled .nav{
 
 /* ========== BUTTONS ========== */
 .btn{
-  display:inline-flex;align-items:center;gap:9px;
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
   padding:13px 26px;border-radius:999px;font-weight:600;font-size:.94rem;
   border:1px solid transparent;cursor:pointer;transition:.3s cubic-bezier(.4,0,.2,1);
-  position:relative;overflow:hidden;
+  position:relative;overflow:hidden; text-align: center;
 }
-.btn-primary{
-  background:linear-gradient(135deg,var(--brand),var(--brand-2));
-  color:#fff;box-shadow:0 10px 30px -8px var(--glow);
-}
+.btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;box-shadow:0 10px 30px -8px var(--glow)}
 .btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 40px -10px var(--glow)}
 .btn-ghost{border-color:var(--stroke);background:var(--card);color:var(--text)}
 .btn-ghost:hover{border-color:var(--brand);transform:translateY(-3px)}
@@ -148,7 +138,7 @@ header.scrolled .nav{
   backdrop-filter:blur(10px);margin-bottom:26px;
 }
 .badge i{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px #22c55e;animation:pulse 2s infinite}
-.hero h1{font-size:clamp(2.6rem,6.2vw,4.6rem);line-height:1.05;font-weight:800;margin-bottom:20px}
+.hero h1{font-size:clamp(2.4rem,6.2vw,4.6rem);line-height:1.05;font-weight:800;margin-bottom:20px}
 .grad{
   background:linear-gradient(110deg,var(--brand) 0%,var(--brand-3) 45%,var(--brand-2) 100%);
   background-size:220% auto;
@@ -156,7 +146,7 @@ header.scrolled .nav{
   animation:shine 6s linear infinite;
 }
 @keyframes shine{to{background-position:220% center}}
-.hero p.lead{color:var(--muted);font-size:1.08rem;max-width:520px;margin-bottom:34px}
+.hero p.lead{color:var(--muted);font-size:clamp(0.95rem, 3vw, 1.08rem);max-width:520px;margin-bottom:34px}
 .typed{color:var(--brand-2);font-weight:600}
 .cursor-bar{display:inline-block;width:2px;height:1.05em;background:var(--brand-2);vertical-align:-3px;animation:blink 1s steps(2) infinite}
 @keyframes blink{50%{opacity:0}}
@@ -182,11 +172,8 @@ header.scrolled .nav{
 }
 .avatar-face{
   aspect-ratio:1;border-radius:18px;
-  background:
-    radial-gradient(circle at 30% 25%,rgba(124,92,255,.5),transparent 55%),
-    radial-gradient(circle at 75% 70%,rgba(34,211,238,.45),transparent 55%),
-    linear-gradient(160deg,#171826,#0b0c15);
-  display:grid;place-items:center;font-family:'Sora';font-size:4rem;font-weight:800;
+  background:radial-gradient(circle at 30% 25%,rgba(124,92,255,.5),transparent 55%),radial-gradient(circle at 75% 70%,rgba(34,211,238,.45),transparent 55%),linear-gradient(160deg,#171826,#0b0c15);
+  display:grid;place-items:center;font-family:'Sora';font-size:clamp(3rem, 10vw, 4rem);font-weight:800;
   color:#fff;position:relative;overflow:hidden;
 }
 .avatar-face::after{
@@ -202,15 +189,12 @@ header.scrolled .nav{
 
 /* ========== SECTION HEADS ========== */
 .sec-head{text-align:center;max-width:620px;margin:0 auto 60px}
-.kicker{
-  font-size:.78rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--brand-2);margin-bottom:14px;
-}
-.sec-head h2{font-size:clamp(2rem,4.2vw,2.9rem);font-weight:700;margin-bottom:14px}
+.kicker{font-size:.78rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--brand-2);margin-bottom:14px}
+.sec-head h2{font-size:clamp(1.8rem,4.2vw,2.9rem);font-weight:700;margin-bottom:14px}
 .sec-head p{color:var(--muted)}
 
 /* ========== CARDS ========== */
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
 .card{
   position:relative;border:1px solid var(--stroke);border-radius:var(--radius);
   background:var(--card);padding:32px;overflow:hidden;
@@ -231,17 +215,14 @@ header.scrolled .nav{
 .card p{color:var(--muted);font-size:.94rem}
 
 /* ========== PROJECTS ========== */
-.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:24px}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
 .proj{
   border:1px solid var(--stroke);border-radius:var(--radius);overflow:hidden;
   background:var(--card);backdrop-filter:blur(12px);
   transition:.45s cubic-bezier(.4,0,.2,1);
 }
 .proj:hover{transform:translateY(-10px);border-color:color-mix(in srgb,var(--brand) 50%,transparent);box-shadow:0 30px 70px -28px var(--glow)}
-.proj-thumb{
-  height:200px;position:relative;overflow:hidden;
-  display:grid;place-items:center;font-size:3.2rem;
-}
+.proj-thumb{height:200px;position:relative;overflow:hidden;display:grid;place-items:center;font-size:3.2rem}
 .p1{background:linear-gradient(135deg,#7c5cff,#22d3ee)}
 .p2{background:linear-gradient(135deg,#ff5c9d,#ff9f5c)}
 .p3{background:linear-gradient(135deg,#22d3ee,#34d399)}
@@ -253,12 +234,9 @@ header.scrolled .nav{
 .proj-body h3{font-size:1.2rem;margin-bottom:8px}
 .proj-body p{color:var(--muted);font-size:.92rem;margin-bottom:18px}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
-.tag{
-  font-size:.74rem;padding:5px 12px;border-radius:999px;font-weight:500;
-  border:1px solid var(--stroke);background:var(--card);color:var(--muted);
-}
+.tag{font-size:.74rem;padding:5px 12px;border-radius:999px;font-weight:500;border:1px solid var(--stroke);background:var(--card);color:var(--muted)}
 .proj-links{display:flex;gap:18px;font-size:.88rem;font-weight:600}
-.proj-links a{color:var(--brand-2);display:inline-flex;align-items:center;gap:6px;transition:.25s}
+.proj-links a{color:var(--brand-2);display:inline-flex;align-items:center;gap:6px;transition:.25s; cursor:pointer;}
 .proj-links a:hover{gap:11px}
 
 /* ========== SKILLS ========== */
@@ -267,25 +245,14 @@ header.scrolled .nav{
 .bar-top{display:flex;justify-content:space-between;font-size:.9rem;font-weight:500;margin-bottom:9px}
 .bar-top span:last-child{color:var(--brand-2)}
 .track{height:7px;background:var(--card);border:1px solid var(--stroke);border-radius:99px;overflow:hidden}
-.fill{
-  height:100%;width:0;border-radius:99px;
-  background:linear-gradient(90deg,var(--brand),var(--brand-2));
-  transition:width 1.4s cubic-bezier(.16,1,.3,1);
-  box-shadow:0 0 14px var(--glow);
-}
+.fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--brand),var(--brand-2));transition:width 1.4s cubic-bezier(.16,1,.3,1);box-shadow:0 0 14px var(--glow)}
 .chips{display:flex;flex-wrap:wrap;gap:10px}
-.chip{
-  padding:9px 16px;border-radius:12px;font-size:.86rem;font-weight:500;
-  border:1px solid var(--stroke);background:var(--card);transition:.3s;cursor:default;
-}
+.chip{padding:9px 16px;border-radius:12px;font-size:.86rem;font-weight:500;border:1px solid var(--stroke);background:var(--card);transition:.3s;cursor:default}
 .chip:hover{transform:translateY(-4px) scale(1.05);border-color:var(--brand);color:var(--brand-2)}
 
 /* ========== TIMELINE ========== */
 .timeline{position:relative;max-width:780px;margin:0 auto;padding-left:34px}
-.timeline::before{
-  content:'';position:absolute;left:8px;top:6px;bottom:6px;width:2px;
-  background:linear-gradient(var(--brand),var(--brand-2),transparent);
-}
+.timeline::before{content:'';position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--brand),var(--brand-2),transparent)}
 .tl-item{position:relative;padding-bottom:42px}
 .tl-item::before{
   content:'';position:absolute;left:-33px;top:6px;width:18px;height:18px;border-radius:50%;
@@ -299,31 +266,61 @@ header.scrolled .nav{
 /* ========== CONTACT ========== */
 .contact-box{
   border:1px solid var(--stroke);border-radius:30px;padding:60px 40px;text-align:center;
-  background:
-    radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--brand) 16%,transparent),transparent 65%),
-    var(--card);
+  background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--brand) 16%,transparent),transparent 65%),var(--card);
   backdrop-filter:blur(14px);
 }
-.contact-box h2{font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:14px}
+.contact-box h2{font-size:clamp(1.7rem,4vw,2.8rem);margin-bottom:14px}
 .contact-box p{color:var(--muted);max-width:480px;margin:0 auto 32px}
 .mailto{
   font-family:'Sora';font-size:clamp(1.1rem,3vw,1.7rem);font-weight:700;
-  display:inline-block;margin-bottom:30px;
-  border-bottom:2px solid transparent;transition:.3s;
+  display:inline-block;margin-bottom:30px;border-bottom:2px solid transparent;transition:.3s; word-break: break-all;
 }
 .mailto:hover{border-color:var(--brand-2);color:var(--brand-2)}
 
 /* ========== FOOTER ========== */
-footer{border-top:1px solid var(--stroke);padding:34px 0;text-align:center;color:var(--muted);font-size:.88rem}
+footer{border-top:1px solid var(--stroke);padding:34px 20px;text-align:center;color:var(--muted);font-size:.88rem}
 
 /* ========== REVEAL ========== */
 .reveal{opacity:0;transform:translateY(38px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1)}
 .reveal.in{opacity:1;transform:none}
 
-/* ========== RESPONSIVE ========== */
+/* ========== ERROR MODAL ========== */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+  z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s ease;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+.modal-box {
+  background: var(--bg-soft); border: 1px solid var(--stroke);
+  border-radius: 24px; padding: 36px 24px; max-width: 400px; width: 100%;
+  text-align: center; transform: translateY(20px) scale(0.95); transition: 0.3s cubic-bezier(.16,1,.3,1);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5); position: relative; overflow: hidden;
+}
+.modal-box::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, #ef4444, #f87171);
+}
+.modal-overlay.active .modal-box { transform: translateY(0) scale(1); }
+.modal-icon {
+  width: 64px; height: 64px; border-radius: 50%; background: rgba(239, 68, 68, 0.1);
+  color: #ef4444; font-size: 2rem; display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px; border: 1px solid rgba(239, 68, 68, 0.2);
+}
+.modal-title { font-family: 'Sora', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+.modal-msg { color: var(--muted); font-size: 0.95rem; margin-bottom: 28px; line-height: 1.6; }
+.modal-btn {
+  background: var(--card); border: 1px solid var(--stroke); padding: 12px 30px;
+  border-radius: 999px; color: var(--text); font-weight: 600; cursor: pointer;
+  transition: 0.2s; font-family: 'Inter', sans-serif; font-size: 0.95rem;
+}
+.modal-btn:hover { background: var(--stroke); transform: translateY(-2px); }
+
+/* ========== RESPONSIVE (MOBILE OPTIMIZATION) ========== */
 @media(max-width:900px){
   .hero-grid,.skills-wrap{grid-template-columns:1fr;gap:48px}
-  .avatar-card{max-width:340px;margin:0 auto}
+  .avatar-card{max-width:320px;margin:0 auto}
   .nav-links{
     position:absolute;top:72px;left:16px;right:16px;flex-direction:column;align-items:stretch;
     background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(20px);
@@ -334,9 +331,28 @@ footer{border-top:1px solid var(--stroke);padding:34px 0;text-align:center;color
   .burger{display:grid}
   section{padding:80px 0}
 }
+@media(max-width:480px){
+  .hero-cta{flex-direction:column; width: 100%;}
+  .hero-cta .btn {width: 100%; justify-content: center;}
+  .contact-box{padding: 40px 20px;}
+  .contact-box .hero-cta {flex-direction:column; width:100%;}
+  .cards, .proj-grid {grid-template-columns: 1fr;}
+  .avatar-face {font-size: 3rem;}
+  .b1,.b2,.b3 {width: 300px; height: 300px;}
+}
 </style>
 </head>
 <body>
+
+<!-- GLOBAL ERROR MODAL -->
+<div class="modal-overlay" id="errorModal">
+  <div class="modal-box">
+    <div class="modal-icon">!</div>
+    <div class="modal-title">Action Failed</div>
+    <div class="modal-msg" id="errorModalMsg">An unexpected error occurred.</div>
+    <button class="modal-btn" onclick="closeError()">Understood</button>
+  </div>
+</div>
 
 <canvas id="networkCanvas"></canvas>
 <div class="blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
@@ -404,8 +420,7 @@ footer{border-top:1px solid var(--stroke);padding:34px 0;text-align:center;color
       <div class="card reveal">
         <div class="card-ico">🎨</div>
       <h3>Android Development</h3>
-<p>Building modern Android applications using Kotlin, Flutter, Firebase, APIs, and location-based services with a focus on performance and clean architecture.
-</p>
+<p>Building modern Android applications using Kotlin, Flutter, Firebase, APIs, and location-based services with a focus on performance and clean architecture.</p>
       </div>
       <div class="card reveal">
         <div class="card-ico">⚡</div>
@@ -442,8 +457,8 @@ footer{border-top:1px solid var(--stroke);padding:34px 0;text-align:center;color
             <span class="tag">Firebase</span>
           </div>
           <div class="proj-links">
-            <a href="[YOUR LIVE URL]">Live demo →</a>
-            <a href="[YOUR GITHUB URL]">Code →</a>
+            <a onclick="showError('Live environment is currently down for maintenance. Please view the code repo.')">Live demo →</a>
+            <a onclick="showError('Repository is currently set to private. Access will be public soon.')">Code →</a>
           </div>
         </div>
       </article>
@@ -460,8 +475,8 @@ footer{border-top:1px solid var(--stroke);padding:34px 0;text-align:center;color
             <span class="tag">Whisper</span>
           </div>
           <div class="proj-links">
-            <a href="[YOUR LIVE URL]">Live demo →</a>
-            <a href="[YOUR GITHUB URL]">Code →</a>
+            <a onclick="showError('Server configuration error: Could not establish a connection to the NLP engine API.')">Live demo →</a>
+            <a onclick="showError('Repository is currently set to private. Access will be public soon.')">Code →</a>
           </div>
         </div>
       </article>
@@ -477,8 +492,8 @@ footer{border-top:1px solid var(--stroke);padding:34px 0;text-align:center;color
             <span class="tag">Firebase</span>
           </div>
           <div class="proj-links">
-            <a href="[YOUR LIVE URL]">Live demo →</a>
-            <a href="[YOUR GITHUB URL]">Code →</a>
+             <a onclick="showError('Firebase Auth Error: Domain not authorized for real-time database reads.')">Live demo →</a>
+             <a onclick="showError('Repository is currently set to private. Access will be public soon.')">Code →</a>
           </div>
         </div>
       </article>
@@ -603,17 +618,48 @@ tb.onclick=()=>{
   tb.textContent = root.dataset.theme==='dark'?'🌙':'☀';
 };
 
-/* ---- Network Canvas Effect ---- */
+/* ---- Global Error Modal Logic ---- */
+const errorModal = document.getElementById('errorModal');
+const errorModalMsg = document.getElementById('errorModalMsg');
+function showError(msg) {
+  errorModalMsg.textContent = msg;
+  errorModal.classList.add('active');
+}
+function closeError() {
+  errorModal.classList.remove('active');
+}
+// Close modal when clicking outside the box
+errorModal.addEventListener('click', (e) => {
+  if (e.target === errorModal) closeError();
+});
+
+/* ---- Network Canvas Effect (Mouse & Touch Optimized) ---- */
 const canvas = document.getElementById('networkCanvas');
 const ctx = canvas.getContext('2d');
 let width = canvas.width = window.innerWidth;
 let height = canvas.height = window.innerHeight;
 
 let particles = [];
-const mouse = { x: null, y: null, radius: 180 };
+const mouse = { x: null, y: null, radius: 150 }; // Slightly reduced radius for mobile
 
+// Mouse events
 window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
 window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
+
+// Touch events for mobile screens
+window.addEventListener('touchstart', (e) => {
+  mouse.x = e.touches[0].clientX;
+  mouse.y = e.touches[0].clientY;
+}, { passive: true });
+window.addEventListener('touchmove', (e) => {
+  mouse.x = e.touches[0].clientX;
+  mouse.y = e.touches[0].clientY;
+}, { passive: true });
+window.addEventListener('touchend', () => {
+  mouse.x = null;
+  mouse.y = null;
+});
+
 window.addEventListener('resize', () => {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
@@ -650,7 +696,6 @@ function initParticles() {
 
 function animate() {
   ctx.clearRect(0, 0, width, height);
-  // Get dynamic color based on theme
   const style = getComputedStyle(document.documentElement);
   const colorStr = style.getPropertyValue('--web-color').trim();
   
@@ -691,7 +736,7 @@ function animate() {
   // Draw exact pointer circle tracker
   if (mouse.x != null) {
     ctx.beginPath();
-    ctx.arc(mouse.x, mouse.y, 10, 0, Math.PI * 2);
+    ctx.arc(mouse.x, mouse.y, 8, 0, Math.PI * 2);
     ctx.strokeStyle = `rgba(${colorStr}, 0.7)`;
     ctx.lineWidth = 1.5;
     ctx.stroke();
