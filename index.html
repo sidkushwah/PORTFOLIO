@@ -20,6 +20,7 @@
   --brand-2:#22d3ee;
   --brand-3:#ff5c9d;
   --glow:rgba(124,92,255,.35);
+  --web-color: 0, 255, 136; /* The green web color */
   --radius:20px;
   --max:1180px;
 }
@@ -31,6 +32,7 @@
   --text:#101322;
   --muted:#5b6176;
   --glow:rgba(124,92,255,.22);
+  --web-color: 34, 211, 238; /* Cyan in light mode to remain visible */
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -53,7 +55,13 @@ img{max-width:100%;display:block}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:linear-gradient(var(--brand),var(--brand-2));border-radius:99px}
 
-/* ========== BACKDROP FX ========== */
+/* ========== BACKDROP FX & CANVAS ========== */
+#networkCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1; /* Sits behind content, above blobs */
+  pointer-events: none; /* Allows clicks to pass through */
+}
 .blobs{position:fixed;inset:0;z-index:-2;overflow:hidden;filter:blur(90px);opacity:.55}
 .blob{position:absolute;border-radius:50%;mix-blend-mode:screen}
 [data-theme="light"] .blobs{opacity:.35;mix-blend-mode:normal}
@@ -64,7 +72,7 @@ img{max-width:100%;display:block}
 @keyframes float2{50%{transform:translate(-100px,-60px) scale(1.2)}}
 @keyframes float3{50%{transform:translate(60px,-90px) scale(1.1)}}
 .grid-lines{
-  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  position:fixed;inset:0;z-index:-2;pointer-events:none;
   background-image:linear-gradient(var(--stroke) 1px,transparent 1px),linear-gradient(90deg,var(--stroke) 1px,transparent 1px);
   background-size:64px 64px;
   mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 30%,transparent 75%);
@@ -237,7 +245,6 @@ header.scrolled .nav{
 .p1{background:linear-gradient(135deg,#7c5cff,#22d3ee)}
 .p2{background:linear-gradient(135deg,#ff5c9d,#ff9f5c)}
 .p3{background:linear-gradient(135deg,#22d3ee,#34d399)}
-.p4{background:linear-gradient(135deg,#f59e0b,#ef4444)}
 .proj-thumb::after{
   content:'';position:absolute;inset:0;
   background:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 12px,transparent 12px 24px);
@@ -331,6 +338,7 @@ footer{border-top:1px solid var(--stroke);padding:34px 0;text-align:center;color
 </head>
 <body>
 
+<canvas id="networkCanvas"></canvas>
 <div class="blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 <div class="grid-lines"></div>
 
@@ -592,8 +600,107 @@ tb.textContent = root.dataset.theme==='dark' ? '🌙' : '☀️';
 tb.onclick=()=>{
   root.dataset.theme = root.dataset.theme==='dark'?'light':'dark';
   localStorage.setItem('theme',root.dataset.theme);
-  tb.textContent = root.dataset.theme==='dark'?'🌙':'☀️️';
+  tb.textContent = root.dataset.theme==='dark'?'🌙':'☀';
 };
+
+/* ---- Network Canvas Effect ---- */
+const canvas = document.getElementById('networkCanvas');
+const ctx = canvas.getContext('2d');
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+
+let particles = [];
+const mouse = { x: null, y: null, radius: 180 };
+
+window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
+window.addEventListener('resize', () => {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+  initParticles();
+});
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
+    this.vx = (Math.random() - 0.5) * 1.5;
+    this.vy = (Math.random() - 0.5) * 1.5;
+    this.radius = Math.random() * 2 + 1;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > width) this.vx = -this.vx;
+    if (this.y < 0 || this.y > height) this.vy = -this.vy;
+  }
+  draw(colorStr) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${colorStr}, 0.8)`;
+    ctx.fill();
+  }
+}
+
+function initParticles() {
+  particles = [];
+  const numParticles = Math.floor((width * height) / 14000); 
+  for (let i = 0; i < numParticles; i++) particles.push(new Particle());
+}
+
+function animate() {
+  ctx.clearRect(0, 0, width, height);
+  // Get dynamic color based on theme
+  const style = getComputedStyle(document.documentElement);
+  const colorStr = style.getPropertyValue('--web-color').trim();
+  
+  for (let i = 0; i < particles.length; i++) {
+    particles[i].update();
+    particles[i].draw(colorStr);
+    
+    if (mouse.x != null) {
+      const dx = particles[i].x - mouse.x;
+      const dy = particles[i].y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < mouse.radius) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(mouse.x, mouse.y);
+        ctx.strokeStyle = `rgba(${colorStr}, ${1 - dist/mouse.radius})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+    
+    for (let j = i; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const connectDist = 120;
+      if (dist < connectDist) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(${colorStr}, ${0.15 * (1 - dist/connectDist)})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+  }
+  
+  // Draw exact pointer circle tracker
+  if (mouse.x != null) {
+    ctx.beginPath();
+    ctx.arc(mouse.x, mouse.y, 10, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(${colorStr}, 0.7)`;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+  
+  requestAnimationFrame(animate);
+}
+initParticles();
+animate();
 
 /* ---- Nav ---- */
 const hdr=document.getElementById('hdr'), links=document.getElementById('navLinks');
